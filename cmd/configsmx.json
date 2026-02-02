@@ -1,0 +1,46 @@
+{
+  "app": {
+    "name": "den-den-mushi-proxy",
+    "environment": "dev",
+    "version": "1.0.0",
+    "port": 1337,
+    "IsLocalHost": true
+  },
+  "ssl": {
+    "enabled": true
+  },
+  "logger": {
+    "level": "debug",
+    "format": "console",
+    "output": "stdout",
+    "filePath": "./.log"
+  },
+  "Cors": {
+    "isEnabled": true,
+    "allowOrigins": ["http://localhost:1337"],
+    "allowMethods": ["GET", "POST", "OPTIONS"],
+    "allowHeaders": ["Authorization", "Content-Type", "X-Requested-With"],
+    "exposeHeaders": [],
+    "allowCredentials": false,
+    "allowMaxAge": 600
+  },
+  "Websocket": {
+    "ReadBufferSize": 1024,
+    "WriteBufferSize": 1024,
+    "AllowedOrigins": ["*"],
+    "Subprotocols": "X-Proxy-Session-Token"
+  },
+  "Ssh": {
+    "IsLocalSshKeyEnabled": true,
+    "IsRemoveInjectKeyEnabled": true,
+    "IsRSAKeyPair": false,
+    "IsCleanupEnabled": true,
+    "IsLogPrivateKey": true,
+    "ConnectDelayAfterInjectSeconds": 5,
+    "SshCommand": "/usr/local/bin/ssh"
+  },
+  "Pty": {
+    "SpawnRetryCount": 4,
+    "SpawnRetryIntervalSeconds": 5
+  }
+}

@@ -1,0 +1,69 @@
+import {terminal} from "./terminal.js";
+
+const {term, fitAddon} = terminal;
+
+const socketManager = {
+    socket: null,
+
+    connect() {
+        if (this.socket?.readyState === WebSocket.OPEN) return;
+
+        // connect to proxy
+        let websocketUrl = `ws://${window.location.hostname}:1337/v1/ws`;
+        console.log(websocketUrl);
+        this.socket = new WebSocket(websocketUrl);
+
+        this.socket.onmessage = (event) => {
+            const buffer = new Uint8Array(event.data);
+            const header = buffer[0];
+            const payload = buffer.slice(1);
+
+            switch (header) {
+                case 0x01: // custom protocol header for output
+                    term.write(new TextDecoder().decode(payload));
+                    break;
+                default:
+                    console.warn("Unknown header:", header);
+            }
+        };
+
+        this.socket.onopen = () => {
+            console.log("WebSocket connection opened");
+            term.focus();
+        };
+
+        this.socket.onclose = ({code, reason}) => {
+        };
+
+        this.socket.onerror = (error) => {
+            term.write(`\r\n\x1b[31mError: ${error.message}\x1b[0m\r\n`);
+        };
+
+        this.socket.binaryType = "arraybuffer";
+    },
+
+    sendResize(cols, rows) {
+        const buffer = new Uint8Array(5);
+        buffer[0] = 0x10; // custom protocol header for resize
+
+        // backend expects big endian
+        buffer[1] = (cols >> 8) & 0xff;
+        buffer[2] = cols & 0xff;
+        buffer[3] = (rows >> 8) & 0xff;
+        buffer[4] = rows & 0xff;
+        this.socket.send(buffer);
+    },
+
+    sendClose() {
+        const buffer = new Uint8Array(1);
+        buffer[0] = 0x18;
+        this.socket.send(buffer);
+        this.socket.close();
+    },
+
+    getSocket() {
+        return this.socket;
+    }
+};
+
+export default socketManager;

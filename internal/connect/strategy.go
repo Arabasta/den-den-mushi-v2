@@ -1,0 +1,30 @@
+package connect
+
+import (
+	"den-den-mushi-v2/pkg/types"
+	"errors"
+)
+
+type Strategy struct {
+	m map[types.ConnectionMethod]ConnectionMethod
+}
+
+func NewRegistry(deps Deps) *Strategy {
+	return &Strategy{
+		m: map[types.ConnectionMethod]ConnectionMethod{
+			types.LocalShell: &LocalShellConnection{
+				log: deps.log, cfg: deps.cfg, commandBuilder: deps.commandBuilder,
+			},
+		},
+	}
+}
+
+var ErrUnsupportedMethod = errors.New("unsupported connection method")
+
+func (r *Strategy) Get(t types.ConnectionMethod) (ConnectionMethod, error) {
+	s, ok := r.m[t]
+	if !ok {
+		return nil, ErrUnsupportedMethod
+	}
+	return s, nil
+}

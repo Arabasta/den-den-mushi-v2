@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <title>Den Den Mushi</title>
+    <link rel="stylesheet" href="/static/css/xterm.css"/>
+    <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+<div id="header">
+    <div class="left">
+        <strong>Den Den Mushi</strong>
+    </div>
+    <div class="right">
+        <button class="menu-button" id="menuButton">⋮</button>
+
+    </div>
+</div>
+
+<div id="toolbar">
+    <div class="left">
+        <button class="toolbar-button" id="sudoButton">Sudo</button>
+        <button class="toolbar-button" id="keiGPTButton">KeiGPT</button>
+
+        <div class="dropdown-wrapper">
+            <button class="toolbar-button" id="scriptsDropdownButton">Scripts ⏷</button>
+            <div class="dropdown-menu" id="scriptsDropdown">
+                <button class="dropdown-item">These scripts are uploaded by to a script store (S3?)</button>
+                <button class="dropdown-item">Validation (through JWT start conn claims) will be done before execution</button>
+                <button class="dropdown-item">Similar to Oracle CloudShell tools</button>
+                <button class="dropdown-item">puppet infrastructure status</button>
+                <button class="dropdown-item"></button>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <button class="toolbar-button danger" id="endButton">End Session</button>
+    </div>
+</div>
+
+<div class="dropdown" id="settingsMenu">
+    <p><strong>Settings</strong></p>
+    <label for="themeSelect"><strong>Theme:</strong></label>
+    <select id="themeSelect">
+        <option value="GruvboxDark">Gruvbox Dark</option>
+        <option value="Dracula">Dracula</option>
+        <option value="SolarizedLight">Solarized Light</option>
+        <option value="SolarizedDark">Solarized Dark</option>
+        <option value="Monokai">Monokai</option>
+    </select>
+
+    <label for="fontSelect"><strong>Font:</strong></label>
+    <select id="fontSelect">
+        <option value="Courier New">Courier New</option>
+        <option value="Monaco">Monaco</option>
+    </select>
+
+    <div class="font-size-controls">
+        <button id="decreaseFont" class="font-btn">−</button>
+        <span id="fontSizeDisplay">16px</span>
+        <button id="increaseFont" class="font-btn">+</button>
+    </div>
+
+    <label>
+        <input type="checkbox" id="puttyCopyPasteToggle">
+        <strong>Copy on select</strong>
+    </label>
+
+    <br><br>
+    <small>
+        Made by <a href="https://github.com/Arabasta" target="_blank" rel="noopener">Arabasta</a>
+    </small>
+</div>
+
+<div id="terminal"></div>
+
+<div id="keiGPTPanel">
+    <div class="header">
+        <h3>KeiGPT Assistant</h3>
+        <button id="closeKeiGPT">×</button>
+    </div>
+    <div id="keiGPTOutput">
+        <p>I've retrieved your terminal history. Type something and I'll help!</p>
+    </div>
+</div>
+<script type="module" src="/static/js/main.js"></script>
+</body>
+</html>
